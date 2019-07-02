@@ -187,10 +187,14 @@ GRANT ALL PRIVILEGES ON DATABASE dtm TO $POSTGRES_USER;
 
 create table Unity_Metrics (
 PKID serial,
+MetricType varchar(50),
 MetricName varchar(50),
 MetricValue integer,
 tstmp timestamp with time zone default current_timestamp,
 PRIMARY KEY(PKID, tstmp));
+
+CREATE INDEX metricTypeIdx ON Unity_Metrics (MetricType);
+
 
 select create_hypertable('Unity_Metrics','tstmp');
 
