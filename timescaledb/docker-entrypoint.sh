@@ -195,8 +195,7 @@ PRIMARY KEY(PKID, tstmp));
 
 CREATE INDEX metricTypeIdx ON Unity_Metrics (MetricType);
 
-
-select create_hypertable('Unity_Metrics','tstmp');
+select create_hypertable('Unity_Metrics','tstmp', 'MetricType', 8, chunk_time_interval => interval '1 day');
 
 EOF
 
