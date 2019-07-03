@@ -185,17 +185,16 @@ GRANT ALL PRIVILEGES ON DATABASE dtm TO $POSTGRES_USER;
 
 \c dtm
 
-create table Unity_Metrics (
+create table unity_metrics (
 PKID serial,
-MetricType varchar(50),
-MetricName varchar(50),
-MetricValue integer,
+metrictype varchar(50),
+metricname varchar(50),
+metricvalue integer,
 tstmp timestamp with time zone default current_timestamp,
-PRIMARY KEY(PKID, tstmp));
+PRIMARY KEY(PKID, tstmp, metrictype));
 
-CREATE INDEX metricTypeIdx ON Unity_Metrics (MetricType);
 
-select create_hypertable('Unity_Metrics','tstmp', 'MetricType', 8, chunk_time_interval => interval '1 day');
+select create_hypertable('unity_metrics','tstmp', 'metrictype', 8, chunk_time_interval => interval '1 day');
 
 EOF
 
