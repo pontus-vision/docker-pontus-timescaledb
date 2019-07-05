@@ -179,22 +179,53 @@ export PID=$!
 sleep 5
 
 
+
+# METRIC_TYPE  num_dsars, avg_time, 
+
 psql -h localhost -U "$POSTGRES_USER" <<EOF
 CREATE DATABASE dtm WITH OWNER $POSTGRES_USER;
 GRANT ALL PRIVILEGES ON DATABASE dtm TO $POSTGRES_USER;
 
 \c dtm
 
-create table unity_metrics (
+create table simple_metrics (
 PKID serial,
 metrictype varchar(50),
 metricname varchar(50),
 metricvalue integer,
 tstmp timestamp with time zone default current_timestamp,
 PRIMARY KEY(PKID, tstmp, metrictype));
+select create_hypertable('simple_metrics','tstmp', 'metrictype', 8, chunk_time_interval => interval '1 day');
 
 
-select create_hypertable('unity_metrics','tstmp', 'metrictype', 8, chunk_time_interval => interval '1 day');
+# DSAR_SOURCE - <organization name>, <emp id>, metrics, 
+# DSAR_SOURCE_TYPE - number_organization, per employee, 
+# DSAR_TYPE - read, update, delete
+# DSAR_STATUS - new, denied, completed, acknowledged
+# DSAR_AGE <=5 , <=10, <=15, <=30, >30 -> diff between now() - create_time() (only for not resolved)
+# num_dsars -- number of DSAR
+# max_resolution_time -- peak time diff between resolution_time() - create_time(), only for the resolution time within the last 30 days
+# avg_resolution_time of DSAR
+# min_resolution_time of DSAR
+# timestamp -- number of DSAR
+
+create table dsar_metrics (
+PKID serial,
+dsar_source_name varchar(50),
+dsar_source_type varchar(50),
+dsar_type varchar(10),
+dsar_age varchar(5),
+dsar_count integer,
+dsar_timestamp timestamp with time zone default current_timestamp,
+PRIMARY KEY(PKID, dsar_source, dsar_type, dsar_age ));
+SELECT create_hypertable('dsar_metrics','dsar_timestamp', 'dsar_source_type', 200, chunk_time_interval => interval '1 day');
+SELECT add_dimension('dsar_metrics', 'dsar_type', chunk_time_interval => interval '1 day', number_partions => 3);
+SELECT add_dimension('dsar_metrics', 'dsar_status', number_partitions => 4);
+SELECT add_dimension('dsar_metrics', 'dsar_age', number_partitions => 5);
+
+
+
+
 
 EOF
 
