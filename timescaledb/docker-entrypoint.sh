@@ -179,8 +179,20 @@ export PID=$!
 sleep 5
 
 
-
 # METRIC_TYPE  num_dsars, avg_time, 
+
+
+# DSAR_SOURCE - <organization name>, <emp id>, metrics, 
+# DSAR_SOURCE_TYPE - number_organization, per employee, 
+# DSAR_TYPE - read, update, delete
+# DSAR_STATUS - new, denied, completed, acknowledged
+# DSAR_AGE <=5 , <=10, <=15, <=30, >30 -> diff between now() - create_time() (only for not resolved)
+# num_dsars -- number of DSAR
+# max_resolution_time -- peak time diff between resolution_time() - create_time(), only for the resolution time within the last 30 days
+# avg_resolution_time of DSAR
+# min_resolution_time of DSAR
+# timestamp -- number of DSAR
+
 
 psql -h localhost -U "$POSTGRES_USER" <<EOF
 CREATE DATABASE dtm WITH OWNER $POSTGRES_USER;
@@ -196,18 +208,6 @@ metricvalue integer,
 tstmp timestamp with time zone default current_timestamp,
 PRIMARY KEY(PKID, tstmp, metrictype));
 select create_hypertable('simple_metrics','tstmp', 'metrictype', 8, chunk_time_interval => interval '1 day');
-
-
-# DSAR_SOURCE - <organization name>, <emp id>, metrics, 
-# DSAR_SOURCE_TYPE - number_organization, per employee, 
-# DSAR_TYPE - read, update, delete
-# DSAR_STATUS - new, denied, completed, acknowledged
-# DSAR_AGE <=5 , <=10, <=15, <=30, >30 -> diff between now() - create_time() (only for not resolved)
-# num_dsars -- number of DSAR
-# max_resolution_time -- peak time diff between resolution_time() - create_time(), only for the resolution time within the last 30 days
-# avg_resolution_time of DSAR
-# min_resolution_time of DSAR
-# timestamp -- number of DSAR
 
 create table dsar_metrics (
 PKID serial,
