@@ -200,32 +200,23 @@ GRANT ALL PRIVILEGES ON DATABASE dtm TO $POSTGRES_USER;
 
 \c dtm
 
-create table simple_metrics (
-PKID serial,
-metrictype varchar(50),
-metricname varchar(50),
-metricvalue integer,
-tstmp timestamp with time zone default current_timestamp,
-PRIMARY KEY(PKID, tstmp, metrictype));
-select create_hypertable('simple_metrics','tstmp', 'metrictype', 8, chunk_time_interval => interval '1 day');
+CREATE table simple_metrics (
+  PKID serial,
+  metrictype varchar(50),
+  metricname varchar(50),
+  metricvalue integer,
+  tstmp timestamp with time zone default current_timestamp,
+  PRIMARY KEY(PKID, tstmp, metrictype));
+SELECT create_hypertable('simple_metrics','tstmp', 'metrictype', 8, chunk_time_interval => interval '1 day');
 
-create table dsar_metrics (
-PKID serial,
-dsar_source_name varchar(50),
-dsar_source_type varchar(50),
-dsar_type varchar(10),
-dsar_age varchar(5),
-dsar_count integer,
-dsar_timestamp timestamp with time zone default current_timestamp,
-PRIMARY KEY(PKID, dsar_source, dsar_type, dsar_age ));
-SELECT create_hypertable('dsar_metrics','dsar_timestamp', 'dsar_source_type', 200, chunk_time_interval => interval '1 day');
-SELECT add_dimension('dsar_metrics', 'dsar_type', chunk_time_interval => interval '1 day', number_partions => 3);
-SELECT add_dimension('dsar_metrics', 'dsar_status', number_partitions => 4);
-SELECT add_dimension('dsar_metrics', 'dsar_age', number_partitions => 5);
-
-
-
-
+CREATE table dsar_metrics (
+  PKID serial,
+  dsar_source_name varchar(50),
+  dsar_source_type varchar(100),
+  dsar_count integer,
+  dsar_timestamp timestamp with time zone default current_timestamp,
+  PRIMARY KEY(PKID,dsar_timestamp, dsar_source_type));
+SELECT create_hypertable('dsar_metrics','dsar_timestamp', 'dsar_source_type', 4, chunk_time_interval => interval '1 day');
 
 EOF
 
