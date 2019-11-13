@@ -13,6 +13,8 @@ docker build   --rm . -t pontusvisiongdpr/grafana
 cd $DIR/grafana-pt
 docker build   --rm . -t pontusvisiongdpr/grafana-pt
 
+cd $DIR
+
 docker push pontusvisiongdpr/timescaledb
 docker push pontusvisiongdpr/postgrest
 docker push pontusvisiongdpr/grafana
