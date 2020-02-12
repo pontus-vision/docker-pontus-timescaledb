@@ -202,8 +202,8 @@ GRANT ALL PRIVILEGES ON DATABASE dtm TO $POSTGRES_USER;
 
 CREATE table simple_metrics (
   PKID serial,
-  metrictype varchar(50),
-  metricname varchar(50),
+  metrictype varchar(500),
+  metricname varchar(500),
   metricvalue integer,
   tstmp timestamp with time zone default current_timestamp,
   PRIMARY KEY(PKID, tstmp, metrictype));
@@ -211,8 +211,8 @@ SELECT create_hypertable('simple_metrics','tstmp', 'metrictype', 8, chunk_time_i
 
 CREATE table dsar_metrics (
   PKID serial,
-  dsar_source_name varchar(50),
-  dsar_source_type varchar(100),
+  dsar_source_name varchar(500),
+  dsar_source_type varchar(1000),
   dsar_count integer,
   dsar_timestamp timestamp with time zone default current_timestamp,
   PRIMARY KEY(PKID,dsar_timestamp, dsar_source_type));

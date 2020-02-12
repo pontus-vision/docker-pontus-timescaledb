@@ -12,3 +12,4 @@ USER grafana
 RUN grafana-cli plugins install agenty-flowcharting-panel
 
 EXPOSE 3000
+COPY --chown=grafana:grafana --from=pontus-grafana-plugin:latest /var/lib/grafana/plugins/grafana/pontus-panel/ /var/lib/grafana/plugins/grafana/pontus-panel/
