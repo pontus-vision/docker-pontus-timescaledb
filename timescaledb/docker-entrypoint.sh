@@ -84,6 +84,7 @@ if [ "$1" = 'postgres' ]; then
 		# messes it up
 		if [ -n "$POSTGRES_PASSWORD" ]; then
 			authMethod=md5
+                        echo "!!!!FOUND PAWD"
 
 			if [ "${#POSTGRES_PASSWORD}" -ge 100 ]; then
 				cat >&2 <<-'EOWARN'
@@ -98,6 +99,7 @@ if [ "$1" = 'postgres' ]; then
 				EOWARN
 			fi
 		else
+                        echo "????? NOOOTTT  FOUND PAWD"
 			# The - option suppresses leading tabs but *not* spaces. :)
 			cat >&2 <<-'EOWARN'
 				****************************************************
@@ -120,6 +122,9 @@ if [ "$1" = 'postgres' ]; then
 			echo
 			echo "host all all all $authMethod"
 		} >> "$PGDATA/pg_hba.conf"
+
+                sed -i 's/(^  .*)trust/#\1 trust/g' "$PGDATA/pg_hba.conf"
+                cat -n "$PGDATA/pg_hba.conf"
 
 		# internal start of server in order to allow set-up using psql-client
 		# does not listen on external TCP/IP and waits until start finishes
@@ -178,6 +183,7 @@ export PID=$!
 
 sleep 5
 
+#cat /var/lib/postgresql/data/pg_hba.conf
 
 # METRIC_TYPE  num_dsars, avg_time, 
 
