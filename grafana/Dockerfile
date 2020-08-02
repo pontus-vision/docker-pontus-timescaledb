@@ -1,7 +1,8 @@
-FROM grafana/grafana:6.6.2-ubuntu
+#FROM grafana/grafana:6.6.2-ubuntu
+FROM grafana/grafana:7.1.0-ubuntu
 USER root
 RUN ln -s /usr/share/grafana/public /usr/share/grafana/grafana && \
-    apt-get update -y && apt install -y netcat
+    apt-get update -y && apt install -y netcat-traditional
 
    
 USER grafana
