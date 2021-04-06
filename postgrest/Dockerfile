@@ -1,9 +1,8 @@
-FROM debian:stretch-slim
+FROM ubuntu:20.04
 
 ARG POSTGREST_VERSION
-
-# Install libpq5
-RUN apt-get -qq update && \
+RUN apt update && \
+    apt upgrade -y && \
     apt-get -qq install -y --no-install-recommends libpq5 && \
     apt-get -qq clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

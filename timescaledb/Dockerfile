@@ -1,4 +1,9 @@
-FROM timescale/timescaledb:1.6.1-pg11
+#FROM timescale/timescaledb:1.6.1-pg11
+FROM timescale/timescaledb:latest-pg11
+RUN apk update  && \
+    apk upgrade  
+#RUN apt update && \
+#    apt upgrate -y
 
 #FROM timescale/timescaledb:latest
 

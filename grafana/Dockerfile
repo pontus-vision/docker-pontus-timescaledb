@@ -4,7 +4,9 @@
 FROM grafana/grafana:7.4.3-ubuntu
 USER root
 RUN ln -s /usr/share/grafana/public /usr/share/grafana/grafana && \
-    apt-get update -y && apt install -y netcat-traditional
+    apt update && \
+    apt upgrade -y && \
+    apt install -y netcat-traditional
 
    
 USER grafana
