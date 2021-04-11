@@ -9,9 +9,9 @@ docker build --rm . -t pontusvisiongdpr/timescaledb:${TAG}
 cd $DIR/postgrest
 docker build --build-arg POSTGREST_VERSION=v6.0.0  --rm . -t pontusvisiongdpr/postgrest:${TAG}
 
-export GIT_SHA=$(git rev-parse --verify HEAD)
+export DOCKER_SHA=$(docker images --no-trunc --quiet pontusvisiongdpr/pontus-grafana-react-panel:${TAG})
 
-export  FORCE_REACT_PANEL=$(git rev-parse --verify HEAD)
+export  FORCE_REACT_PANEL=${DOCKER_SHA}
 cd $DIR/grafana
 cat Dockerfile.template | envsubst > Dockerfile
 docker build --build-arg FORCE_REACT_PANEL=${FORCE_REACT_PANEL}  --rm . -t pontusvisiongdpr/grafana:${TAG}
@@ -22,9 +22,9 @@ docker build   --rm . -t pontusvisiongdpr/grafana-pt:${TAG}
 
 cd $DIR
 
-export LAST_GIT_SHA=$(cat ./last_git_sha)
-if [[ ${GIT_SHA} != ${LAST_GIT_SHA} ]]; then
-  echo ${GIT_SHA} > ./last_git_sha;
+export LAST_DOCKER_SHA=$(cat ./last_docker_sha)
+if [[ ${DOCKER_SHA} != ${LAST_DOCKER_SHA} ]]; then
+  echo ${DOCKER_SHA} > ./last_docker_sha;
   docker scan pontusvisiongdpr/grafana:${TAG}  --severity high
   docker scan pontusvisiongdpr/grafana-pt:${TAG}  --severity high
   docker scan pontusvisiongdpr/timescaledb:${TAG}  --severity high
