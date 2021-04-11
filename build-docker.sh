@@ -1,17 +1,21 @@
 #!/bin/bash
+
+export TAG=${TAG:-1.13.2}
 set -e
 DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 cd $DIR/timescaledb
-docker build --rm . -t pontusvisiongdpr/timescaledb
+docker build --rm . -t pontusvisiongdpr/timescaledb:${TAG}
 
 cd $DIR/postgrest
-docker build --build-arg POSTGREST_VERSION=v6.0.0  --rm . -t pontusvisiongdpr/postgrest
+docker build --build-arg POSTGREST_VERSION=v6.0.0  --rm . -t pontusvisiongdpr/postgrest:${TAG}
 
 cd $DIR/grafana
-docker build   --rm . -t pontusvisiongdpr/grafana
+cat Dockerfile.template | envsubst > Dockerfile
+docker build   --rm . -t pontusvisiongdpr/grafana:${TAG}
 
 cd $DIR/grafana-pt
-docker build   --rm . -t pontusvisiongdpr/grafana-pt
+cat Dockerfile.template | envsubst > Dockerfile
+docker build   --rm . -t pontusvisiongdpr/grafana-pt:${TAG}
 
 cd $DIR
 
