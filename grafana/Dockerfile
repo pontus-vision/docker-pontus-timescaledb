@@ -20,8 +20,8 @@ COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini
 EXPOSE 3000
 
 ARG FORCE_REACT_PANEL=1 
-ENV FORCE_REACT_PANEL=ae71491b58424b3138bd425854b6fb9621c0a02e
-RUN echo ae71491b58424b3138bd425854b6fb9621c0a02e
+ENV FORCE_REACT_PANEL=be3758738c9a38ddbf7516f6f0d718b51a8e2a3c
+RUN echo be3758738c9a38ddbf7516f6f0d718b51a8e2a3c
 COPY  --chown=grafana:grafana  --from=pontusvisiongdpr/pontus-grafana-react-panel:1.13.2  /var/lib/grafana/plugins/grafana/pontus-panel/ /var/lib/grafana/plugins/grafana/pontus-panel/
 #COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-grafana-orientdb-datasource:latest /grafana-orientdb-plugin/dist /var/lib/grafana/plugins/grafana/pontus-grafana-orientdb-datasource/
 #COPY --chown=grafana:grafana ./algenty-grafana-flowcharting-0.6.0-6-gfee0569.zip /var/lib/grafana/plugins/grafana/
