@@ -13,6 +13,7 @@ RUN ln -s /usr/share/grafana/public /usr/share/grafana/grafana && \
 USER grafana
 RUN grafana-cli plugins install agenty-flowcharting-panel
 RUN grafana-cli plugins install simpod-json-datasource
+RUN grafana-cli plugins install yesoreyeram-boomtheme-panel
 COPY --chown=grafana:grafana grafana.db /var/lib/grafana/
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana.ini
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini
