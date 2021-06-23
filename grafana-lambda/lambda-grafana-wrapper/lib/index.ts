@@ -13,12 +13,17 @@ exports.handler = async (
   try {
     const restClient = new HttpClient('tr-client', undefined, {
       headers: event.headers,
+      allowRedirects: false,
+      allowRedirectDowngrade: false,
+      ignoreSslError: true,
       maxRetries: 5,
     })
 
+    const reqUrl = `http://localhost:3000${ (!event.path.startsWith('/'))? '/'+ event.path : event.path}`
+    console.log (`#####123######### Creating connection to URL ${reqUrl}; event = ${JSON.stringify(event)}`)
     const resp = await restClient.request(
       event.httpMethod,
-      `http://localhost:3000${ (!event.path.startsWith('/'))? '/'+ event.path : event.path}`,
+      reqUrl,
       (event.body) ? event.body!: '', event.headers);
 
     const headers: Record<string,any> = {}
@@ -27,12 +32,15 @@ exports.handler = async (
         headers[header] = resp.message.headers[header];
       }
     }
+    console.log (`################## got response :${JSON.stringify(resp.message.headers)}`)
+    const body = await resp.readBody();
+    console.log (`################## got response :${body}`)
 
     return {
-      statusCode: resp.message.statusCode!,
+      statusCode: resp.message.statusCode||200,
       headers:headers,
       // headers: resp.message.headers,
-      body: await resp.readBody(),
+      body: body,
       isBase64Encoded: false,
 
     };

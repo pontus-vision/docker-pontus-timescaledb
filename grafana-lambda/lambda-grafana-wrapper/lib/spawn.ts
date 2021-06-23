@@ -1,12 +1,12 @@
 import {ChildProcessWithoutNullStreams, SendHandle, Serializable, spawn} from "child_process";
 
 export const runApp = async (): Promise<void> => {
-  console.log(`\n\n\n [runMigrations] Start`);
+  console.log(`\n\n\n [/run.sh] Start`);
   const stderr = '';
   const envConf = await getEnvConf();
 
-  const args: string[] = ['/run.sh'];
-  const path = '/';
+  const args: string[] = [];
+  const path = '/run.sh';
 
   console.log(`\n\n\n [runApp] Running migration path ${path} with args ${JSON.stringify(args)}`);
 
