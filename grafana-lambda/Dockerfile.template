@@ -18,13 +18,16 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
 
 ENV PV_LOCAL_COMMAND=/run.sh
 ENV PV_LOCAL_ARGS=[]
-USER grafana
+
 COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-lambda-wrapper:${TAG} /function /function
 
 COPY --chown=grafana:grafana grafana.ini.noauth /etc/grafana/grafana.ini
+COPY --chown=grafana:grafana entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+USER grafana
 
 WORKDIR /function
-ENTRYPOINT ["/usr/local/bin/npx", "aws-lambda-ric"]
+ENTRYPOINT ["/usr/bin/npx", "aws-lambda-ric"]
 CMD ["dist/index.handler"]
 
 

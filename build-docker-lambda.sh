@@ -8,28 +8,36 @@ export DOCKER_SHA=$(docker images --no-trunc --quiet pontusvisiongdpr/pontus-gra
 
 export  FORCE_REACT_PANEL=${DOCKER_SHA}
 cd $DIR/grafana-lambda
+
 cat Dockerfile.template | envsubst > Dockerfile
+
 docker build \
     --build-arg FUNCTION_DIR='/function' \
     --build-arg FORCE_REACT_PANEL=${FORCE_REACT_PANEL}  \
-    --rm . -t pontusvisiongdpr/grafana-lambda:${TAG}
+    --rm . -t pontusvisiongdpr/pontus-comply-grafana-lambda:${TAG}
 
-cd $DIR
 
-exit 0
+if [[ -z $FORMITI_DEV_ACCOUNT ]]; then
 
-export LAST_DOCKER_SHA=$(cat ./last_docker_sha)
-if [[ ${DOCKER_SHA} != ${LAST_DOCKER_SHA} ]]; then
-  echo ${DOCKER_SHA} > ./last_docker_sha;
-  docker scan pontusvisiongdpr/grafana:${TAG}  --severity high
-  docker scan pontusvisiongdpr/grafana-pt:${TAG}  --severity high
-  docker scan pontusvisiongdpr/timescaledb:${TAG}  --severity high
-  docker scan pontusvisiongdpr/postgrest:${TAG} --severity high
+  export LAST_DOCKER_SHA=$(cat ./last_docker_sha)
+  if [[ ${DOCKER_SHA} != ${LAST_DOCKER_SHA} ]]; then
+    echo ${DOCKER_SHA} > ./last_docker_sha;
+    docker scan pontusvisiongdpr/pontus-comply-grafana-lambda:${TAG} --severity high
+  fi
+
+  docker push pontusvisiongdpr/pontus-comply-grafana-lambda:${TAG}
+else
+  if [[ $(aws --version 2>&1 ) == "aws-cli/1"* ]] ; then
+    $(aws ecr get-login --no-include-email --region eu-west-2)
+  else
+    aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${FORMITI_DEV_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com
+  fi
+
+  TIMESTAMP=$(date +%y%m%d_%H%M%S)
+  docker tag pontusvisiongdpr/pontus-comply-grafana-lambda:${TAG} ${FORMITI_DEV_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pontus-comply-grafana-lambda:${TAG}-${TIMESTAMP}
+  docker push ${FORMITI_DEV_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/pontus-comply-grafana-lambda:${TAG}-${TIMESTAMP}
+
 fi
 
-docker push pontusvisiongdpr/timescaledb:${TAG}
-docker push pontusvisiongdpr/postgrest:${TAG}
-docker push pontusvisiongdpr/grafana:${TAG}
-docker push pontusvisiongdpr/grafana-pt:${TAG}
 
 

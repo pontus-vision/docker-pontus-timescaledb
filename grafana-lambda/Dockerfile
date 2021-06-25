@@ -24,7 +24,7 @@ COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-lambda-wrapper:1.13.
 COPY --chown=grafana:grafana grafana.ini.noauth /etc/grafana/grafana.ini
 
 WORKDIR /function
-ENTRYPOINT ["/usr/local/bin/npx", "aws-lambda-ric"]
+ENTRYPOINT ["/usr/bin/npx", "aws-lambda-ric"]
 CMD ["dist/index.handler"]
 
 
