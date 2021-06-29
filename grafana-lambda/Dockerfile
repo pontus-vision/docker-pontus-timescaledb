@@ -16,12 +16,20 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     ./nodesource_setup.sh &&\
     apt install nodejs
 
-ENV PV_LOCAL_COMMAND=/run.sh
-ENV PV_LOCAL_ARGS=[]
-USER grafana
+ENV PV_LOCAL_COMMAND=/etc/grafana/entrypoint.sh
+ENV GF_PATHS_DATA=/mnt/grafana
+ENV PV_LOCAL_ARGS="[]"
+ENV PV_EXT_DOMAIN=test1.formiti-demo.pontusvision.com
+ENV PV_CLIENT_SECRET=91fff12e-9b97-4028-8705-ffd8126fba3f
+
 COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-lambda-wrapper:1.13.2 /function /function
 
-COPY --chown=grafana:grafana grafana.ini.noauth /etc/grafana/grafana.ini
+COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana.ini
+COPY --chown=grafana:grafana entrypoint.sh /etc/grafana/entrypoint.sh
+RUN chmod 755 /etc/grafana/entrypoint.sh  /run.sh
+
+USER grafana
+
 
 WORKDIR /function
 ENTRYPOINT ["/usr/bin/npx", "aws-lambda-ric"]

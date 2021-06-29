@@ -38,7 +38,7 @@ data = /mnt/grafana/var/lib/grafana
 ;http_port = 3000
 
 # The public facing domain name used to access grafana from a browser
-;domain = localhost
+;domain = ${PV_EXT_DOMAIN}
 
 # Redirect to correct domain if host header does not match domain
 # Prevents DNS rebinding attacks
@@ -47,7 +47,7 @@ data = /mnt/grafana/var/lib/grafana
 # The full public facing url you use in browser, used for redirects and emails
 # If you use reverse proxy and sub path specify full url (with sub path)
 ;root_url = http://localhost:18443/grafana
-;root_url = http://localhost:18443/grafana/
+root_url = ${PV_EXT_DOMAIN_PREFIX}
 
 # Log web requests
 ;router_logging = false
