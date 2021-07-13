@@ -22,7 +22,8 @@ ENV PV_LOCAL_ARGS="[]"
 ENV PV_EXT_DOMAIN=test1.formiti-demo.pontusvision.com
 ENV PV_CLIENT_SECRET=91fff12e-9b97-4028-8705-ffd8126fba3f
 
-COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-lambda-wrapper:${TAG} /function /function
+RUN echo ${TAG}
+COPY --chown=grafana:grafana  --from=pontusvisiongdpr/pontus-lambda-wrapper:${TAG} /function /function
 
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana.ini
 COPY --chown=grafana:grafana entrypoint.sh /etc/grafana/entrypoint.sh
