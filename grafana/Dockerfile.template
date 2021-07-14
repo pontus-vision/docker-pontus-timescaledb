@@ -14,6 +14,7 @@ USER grafana
 RUN grafana-cli plugins install agenty-flowcharting-panel
 RUN grafana-cli plugins install simpod-json-datasource
 RUN grafana-cli plugins install yesoreyeram-boomtheme-panel
+RUN grafana-cli plugins install grafana-timestream-datasource
 COPY --chown=grafana:grafana grafana.db /var/lib/grafana/
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana.ini
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini

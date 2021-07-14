@@ -14,6 +14,7 @@ USER grafana
 RUN grafana-cli plugins install agenty-flowcharting-panel
 RUN grafana-cli plugins install simpod-json-datasource
 RUN grafana-cli plugins install yesoreyeram-boomtheme-panel
+RUN grafana-cli plugins install grafana-timestream-datasource
 COPY --chown=grafana:grafana grafana.db /var/lib/grafana/
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana.ini
 COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini
@@ -21,8 +22,8 @@ COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini
 EXPOSE 3000
 
 ARG FORCE_REACT_PANEL=1 
-ENV FORCE_REACT_PANEL=
-RUN echo 
+ENV FORCE_REACT_PANEL=sha256:2ff3ac9d44b3eae59944548d0dfa3d2993d412208708221f73ab9ca3af3f3b24
+RUN echo sha256:2ff3ac9d44b3eae59944548d0dfa3d2993d412208708221f73ab9ca3af3f3b24
 COPY  --chown=grafana:grafana  --from=pontusvisiongdpr/pontus-grafana-react-panel:1.13.2  /var/lib/grafana/plugins/grafana/pontus-panel/ /var/lib/grafana/plugins/grafana/pontus-panel/
 #COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-grafana-orientdb-datasource:latest /grafana-orientdb-plugin/dist /var/lib/grafana/plugins/grafana/pontus-grafana-orientdb-datasource/
 #COPY --chown=grafana:grafana ./algenty-grafana-flowcharting-0.6.0-6-gfee0569.zip /var/lib/grafana/plugins/grafana/

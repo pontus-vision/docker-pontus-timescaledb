@@ -1,0 +1,29 @@
+FROM influxdb:2.0.7
+
+RUN apt update && \
+    apt upgrade -y && \
+    curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
+    chmod 755 nodesource_setup.sh &&\
+    ./nodesource_setup.sh &&\
+    apt install -y nodejs
+
+#RUN mkdir -p /mnt/influxdb/influxdb2 && \
+    #ls -altr /var/lib/influxdb2 && \
+    #rm -rfr /var/lib/influxdb2 && \
+    #ln -s /mnt/influxdb/influxdb2 /var/lib/influxdb2
+
+COPY --chown=1000:1000  --from=pontusvisiongdpr/pontus-lambda-wrapper:${TAG} /function /function
+COPY --chown=1000:1000 config.yml /etc/influxdb2/config.yml 
+
+ENV PV_LOCAL_COMMAND=/entrypoint.sh
+ENV PV_LOCAL_ARGS='["influxd", "--reporting-disabled" ]'
+ENV PV_EXT_DOMAIN=test1.formiti-demo.pontusvision.com
+ENV PV_LOCAL_URL_PREFIX=http://localhost:9999
+
+
+WORKDIR /function
+ENTRYPOINT ["/usr/bin/npx", "aws-lambda-ric"]
+CMD ["dist/index.handler"]
+# PostgREST reads /etc/postgrest.conf so map the configuration
+# file in when you run this container
+
