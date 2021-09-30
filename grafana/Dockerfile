@@ -7,7 +7,8 @@ USER root
 RUN ln -s /usr/share/grafana/public /usr/share/grafana/grafana && \
     apt update && \
     apt upgrade -y && \
-    apt install -y netcat-traditional
+    apt install -y netcat-traditional && \
+    echo force
 
    
 USER grafana
@@ -21,9 +22,9 @@ COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini
 
 EXPOSE 3000
 
-ARG FORCE_REACT_PANEL=1 
-ENV FORCE_REACT_PANEL=sha256:2ff3ac9d44b3eae59944548d0dfa3d2993d412208708221f73ab9ca3af3f3b24
-RUN echo sha256:2ff3ac9d44b3eae59944548d0dfa3d2993d412208708221f73ab9ca3af3f3b24
+ARG FORCE_REACT_PANEL=4 
+ENV FORCE_REACT_PANEL=sha256:0f28a3c851b4a53e8581ae4056f37615d1319837adb2196be905a98928951b2e
+RUN echo sha256:0f28a3c851b4a53e8581ae4056f37615d1319837adb2196be905a98928951b2e
 COPY  --chown=grafana:grafana  --from=pontusvisiongdpr/pontus-grafana-react-panel:1.13.2  /var/lib/grafana/plugins/grafana/pontus-panel/ /var/lib/grafana/plugins/grafana/pontus-panel/
 #COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-grafana-orientdb-datasource:latest /grafana-orientdb-plugin/dist /var/lib/grafana/plugins/grafana/pontus-grafana-orientdb-datasource/
 #COPY --chown=grafana:grafana ./algenty-grafana-flowcharting-0.6.0-6-gfee0569.zip /var/lib/grafana/plugins/grafana/
