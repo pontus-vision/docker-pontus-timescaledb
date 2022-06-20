@@ -1,7 +1,11 @@
 #FROM timescale/timescaledb:1.6.1-pg11
 FROM timescale/timescaledb:latest-pg11
+
+RUN echo foo2
+
+
 RUN apk update  && \
-    apk upgrade  
+    apk upgrade   
 #RUN apt update && \
 #    apt upgrate -y
 

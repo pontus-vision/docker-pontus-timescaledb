@@ -14,6 +14,7 @@ WORKDIR /tmp
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     chmod 755 nodesource_setup.sh &&\
     ./nodesource_setup.sh &&\
+    apt upgrade -y &&\
     apt install nodejs
 
 ENV PV_LOCAL_COMMAND=/etc/grafana/entrypoint.sh

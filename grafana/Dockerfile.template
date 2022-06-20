@@ -2,7 +2,9 @@
 #FROM grafana/grafana:7.1.0-ubuntu
 #FROM grafana/grafana:7.3.7-ubuntu
 #FROM grafana/grafana:7.4.3-ubuntu
-FROM grafana/grafana:7.5.3-ubuntu
+#FROM grafana/grafana:7.5.3-ubuntu
+#FROM grafana/grafana:7.5.14-ubuntu
+FROM grafana/grafana:8.5.4-ubuntu
 USER root
 RUN ln -s /usr/share/grafana/public /usr/share/grafana/grafana && \
     apt update && \

@@ -2,7 +2,9 @@
 #FROM grafana/grafana:7.1.0-ubuntu
 #FROM grafana/grafana:7.3.7-ubuntu
 #FROM grafana/grafana:7.4.3-ubuntu
-FROM grafana/grafana:7.5.3-ubuntu
+#FROM grafana/grafana:7.5.3-ubuntu
+#FROM grafana/grafana:7.5.14-ubuntu
+FROM grafana/grafana:8.5.4-ubuntu
 USER root
 RUN ln -s /usr/share/grafana/public /usr/share/grafana/grafana && \
     apt update && \
@@ -23,9 +25,9 @@ COPY --chown=grafana:grafana grafana.ini /etc/grafana/grafana-pontus.ini
 EXPOSE 3000
 
 ARG FORCE_REACT_PANEL=4 
-ENV FORCE_REACT_PANEL=sha256:0f28a3c851b4a53e8581ae4056f37615d1319837adb2196be905a98928951b2e
-RUN echo sha256:0f28a3c851b4a53e8581ae4056f37615d1319837adb2196be905a98928951b2e
-COPY  --chown=grafana:grafana  --from=pontusvisiongdpr/pontus-grafana-react-panel:1.13.2  /var/lib/grafana/plugins/grafana/pontus-panel/ /var/lib/grafana/plugins/grafana/pontus-panel/
+ENV FORCE_REACT_PANEL=sha256:d697311f164cf08d26a9f43d03b00904318926c541bd9b7b49968c3596ea486f
+RUN echo sha256:d697311f164cf08d26a9f43d03b00904318926c541bd9b7b49968c3596ea486f
+COPY  --chown=grafana:grafana  --from=pontusvisiongdpr/pontus-grafana-react-panel:1.15.0  /var/lib/grafana/plugins/grafana/pontus-panel/ /var/lib/grafana/plugins/grafana/pontus-panel/
 #COPY --chown=grafana:grafana --from=pontusvisiongdpr/pontus-grafana-orientdb-datasource:latest /grafana-orientdb-plugin/dist /var/lib/grafana/plugins/grafana/pontus-grafana-orientdb-datasource/
 #COPY --chown=grafana:grafana ./algenty-grafana-flowcharting-0.6.0-6-gfee0569.zip /var/lib/grafana/plugins/grafana/
 #USER root

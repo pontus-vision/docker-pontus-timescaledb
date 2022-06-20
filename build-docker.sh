@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export TAG=${TAG:-1.13.2}
+#export TAG=${TAG:-1.13.2}
+export TAG=${TAG:-1.15.0}
 set -e
 DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 cd $DIR/timescaledb
@@ -23,7 +24,7 @@ docker build   --rm . -t pontusvisiongdpr/grafana-pt:${TAG}
 cd $DIR
 
 export LAST_DOCKER_SHA=$(cat ./last_docker_sha)
-if [[ ${DOCKER_SHA} != ${LAST_DOCKER_SHA} ]]; then
+if [[ $SKIP_CHECKS != 'true' &&  ${DOCKER_SHA} != ${LAST_DOCKER_SHA} ]]; then
   echo ${DOCKER_SHA} > ./last_docker_sha;
   docker scan pontusvisiongdpr/grafana:${TAG}  --severity high
   docker scan pontusvisiongdpr/grafana-pt:${TAG}  --severity high
