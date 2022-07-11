@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #export TAG=${TAG:-1.13.2}
-export TAG=${TAG:-1.15.0}
+export TAG=${TAG:-1.15.1}
 set -e
 DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 cd $DIR/timescaledb
